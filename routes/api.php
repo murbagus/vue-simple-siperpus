@@ -23,7 +23,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
     ], function () {
         Route::post('login', 'AuthController@login');
         Route::post('logout', 'AuthController@logout');
-        Route::post('register', 'AuthController@register');
         Route::get('me', 'AuthController@me');
+    });
+
+    // api/v1/admin
+    Route::prefix('admin')->group(function () {
+        Route::post('store', 'AdminController@store');
     });
 });
