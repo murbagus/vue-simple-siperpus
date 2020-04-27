@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Admin;
+use App\HistoryAksiDataAdmin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,7 +19,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth.api:api_v1_admin', ['except' => ['login', 'register']]);
+        $this->middleware('auth.api:api_v1_admin', ['except' => ['login']]);
     }
 
     /**
@@ -166,8 +168,17 @@ class AuthController extends Controller
             // Hashing password
             $request->request->set('password', Hash::make($request->password));
 
-            // Insert data
-            Admin::create($request->only(['id', 'password', 'nomor_ktp', 'nama', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'nomor_telpon', 'email', 'foto']));
+            DB::transaction(function () use ($request) {
+                // Insert data admin baru
+                $admin = Admin::create($request->only(['id', 'password', 'nomor_ktp', 'nama', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'nomor_telpon', 'email', 'foto']));
+
+                // Logging aksi perubahan data
+                HistoryAksiDataAdmin::create([
+                    'admin' => $admin->id,
+                    'pembuat' => auth()->id(),
+                    'catatan_aksi' => 'Menambahkan admin baru',
+                ]);
+            });
 
             // Objek respon
             $respons_obj->status = $respons_obj::STATUS_OK;
@@ -175,6 +186,7 @@ class AuthController extends Controller
             $respons_obj->hasil = [
                 'data' => [
                     'new_admin' => $request->only(['id', 'nomor_ktp', 'nama', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'nomor_telpon', 'email', 'foto']),
+                    'next_request_token' => auth()->refresh(),
                 ],
             ];
         }

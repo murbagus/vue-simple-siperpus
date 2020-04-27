@@ -43,8 +43,13 @@ class Admin extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function aksiDataInfoBuku()
+    public function f_dataBerubah()
     {
-        return $this->hasMany('App\HistoryAksiDataInfoBuku', 'pembuat');
+        return $this->hasMany('App\HistoryAksiDataAdmin', 'admin', 'id');
+    }
+
+    public function f_mengubahDataAdmin()
+    {
+        return $this->hasMany('App\HistoryAksiDataAdmin', 'admin', 'id');
     }
 }
