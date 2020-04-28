@@ -106,6 +106,6 @@ class AdminController extends Controller
             ];
         }
 
-        return response()->json($respons_obj);
+        return response()->json($respons_obj, $respons_obj->kode);
     }
 }

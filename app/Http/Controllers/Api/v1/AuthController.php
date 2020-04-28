@@ -68,7 +68,7 @@ class AuthController extends Controller
             ];
         }
 
-        return response()->json($respons_obj);
+        return response()->json($respons_obj, $respons_obj->kode);
     }
 
     /**
@@ -88,7 +88,7 @@ class AuthController extends Controller
             'next_request_token' => auth()->refresh(),
         ];
 
-        return response()->json($respons_obj);
+        return response()->json($respons_obj, $respons_obj->kode);
     }
 
     /**
@@ -109,6 +109,6 @@ class AuthController extends Controller
             'sukses' => 'Berhasil logout',
         ];
 
-        return response()->json($respons_obj);
+        return response()->json($respons_obj, $respons_obj->kode);
     }
 }
