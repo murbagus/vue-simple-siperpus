@@ -48,6 +48,9 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
+        // Authorisasi
+        $this->authorize('create', Admin::class);
+
         $respons_obj = new ResponseObject();
 
         $validator = Validator::make($request->all(), [
