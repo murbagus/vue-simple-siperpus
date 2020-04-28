@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Http\Controllers\Api\v1\ResponseObject;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,6 +53,23 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        $respons_obj = new ResponseObject();
+        if ($exception instanceof NotFoundHttpException && ($request->expectsJson() || $request->is('api/*'))) {
+            $respons_obj->status = $respons_obj::STATUS_FAIL;
+            $respons_obj->kode = $respons_obj::CODE_NOT_FOUND;
+            $respons_obj->pesan = [
+                'error' => 'Tidak menemukan suber pada URI ini'
+            ];
+            return response()->json($respons_obj, $exception->getStatusCode());
+        } else if ($exception instanceof AuthorizationException && ($request->expectsJson() || $request->is('api/*'))) {
+            $respons_obj->status = $respons_obj::STATUS_FAIL;
+            $respons_obj->kode = $respons_obj::CODE_UNAUTHORIZED;
+            $respons_obj->pesan = [
+                'error' => 'Dilarang mengakses sumber pada URI ini'
+            ];
+            return response()->json($respons_obj, 403);
+        }
+
         return parent::render($request, $exception);
     }
 }
