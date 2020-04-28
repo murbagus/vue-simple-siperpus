@@ -29,6 +29,9 @@ class AdminRuleController extends Controller
      */
     public function set(Request $request)
     {
+        // Authorization
+        $this->authorize('set', AdminRule::class);
+
         $respons_obj = new ResponseObject();
 
         $validator = Validator::make($request->all(), [
