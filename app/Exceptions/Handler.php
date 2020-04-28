@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
             return response()->json($respons_obj, $exception->getStatusCode());
         } else if ($exception instanceof AuthorizationException && ($request->expectsJson() || $request->is('api/*'))) {
             $respons_obj->status = $respons_obj::STATUS_FAIL;
-            $respons_obj->kode = $respons_obj::CODE_UNAUTHORIZED;
+            $respons_obj->kode = $respons_obj::CODE_FORBIDDEN;
             $respons_obj->pesan = [
                 'error' => 'Dilarang mengakses sumber pada URI ini'
             ];
