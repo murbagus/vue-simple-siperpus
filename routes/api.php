@@ -30,4 +30,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
     Route::prefix('admin')->group(function () {
         Route::post('store', 'AdminController@store');
     });
+
+    // api/v1/admin-rule
+    Route::prefix('admin-rule')->group(function () {
+        Route::post('set', 'AdminRuleController@set');
+    });
 });
