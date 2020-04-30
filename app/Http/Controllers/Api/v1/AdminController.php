@@ -64,7 +64,7 @@ class AdminController extends Controller
             'alamat' => ['bail', 'required'],
             'nomor_telpon' => ['bail', 'required', 'max:15'],
             'email' => ['bail', 'required', 'email:rfc,dns'],
-            'foto' => ['bail', 'required']
+            'file_foto' => ['bail', 'file', 'nullable', 'max:1024', 'mimes:jpeg,png,jpg']
         ]);
 
         if ($validator->fails()) {
@@ -83,9 +83,24 @@ class AdminController extends Controller
             // Hashing password
             $request->request->set('password', Hash::make($request->password));
 
+            // Cek file_foto
+            // Jika ada file_foto yang diberikan maka gunakan fot tersebut
+            if ($request->hasFile('file_foto')) {
+                // Tambahkan foto pada request yang berisi nama file_foto
+                $nama_foto = config('fileupload.img.admin_profile.prefix') . $request->id . '-' . time() . '.' . $request->file_foto->getClientOriginalExtension();
+                $request->request->add(['foto' => $nama_foto]);
+            } else {
+                $request->request->add(['foto' => 'profiledefault.png']);
+            }
+
             DB::transaction(function () use ($request) {
                 // Insert data admin baru
                 $admin = Admin::create($request->only(['id', 'password', 'nomor_ktp', 'nama', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'nomor_telpon', 'email', 'foto']));
+
+                // Simpan file_foto
+                if ($request->hasFile('file_foto')) {
+                    $request->file_foto->storeAs(config('fileupload.img.admin_profile.path'), $request->foto);
+                }
 
                 // Logging aksi perubahan data
                 HistoryAksiDataAdmin::create([
