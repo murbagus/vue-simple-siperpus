@@ -71,9 +71,7 @@ class AdminRuleController extends Controller
                 $respons_obj->status = $respons_obj::STATUS_OK;
                 $respons_obj->kode = $respons_obj::CODE_OK;
                 $respons_obj->hasil = [
-                    'data' => [
-                        'next_request_token' => auth()->refresh(),
-                    ]
+                    'next_request_token' => auth()->refresh(),
                 ];
             } else {
                 // Tidak ada rule yang diberikan
