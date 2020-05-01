@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\AdminRule;
 use App\HistoryAksiDataAdmin;
 use App\Http\Controllers\Controller;
+use App\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -71,6 +72,12 @@ class AdminRuleController extends Controller
                 $respons_obj->status = $respons_obj::STATUS_OK;
                 $respons_obj->kode = $respons_obj::CODE_OK;
                 $respons_obj->hasil = [
+                    'data' => [
+                        'admin' => $request->admin,
+                        'rule' => Rule::all()->only($request->rule)->map(function ($item, $key) {
+                            return $item->nama;
+                        }),
+                    ],
                     'next_request_token' => auth()->refresh(),
                 ];
             } else {
