@@ -116,8 +116,8 @@ class AdminController extends Controller
             $respons_obj->hasil = [
                 'data' => [
                     'new_admin' => $request->only(['id', 'nomor_ktp', 'nama', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'nomor_telpon', 'email', 'foto']),
-                    'next_request_token' => auth()->refresh(),
                 ],
+                'next_request_token' => auth()->refresh(),
             ];
         }
 
