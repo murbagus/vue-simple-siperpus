@@ -29,6 +29,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
     // api/v1/admin
     Route::prefix('admin')->group(function () {
         Route::post('store', 'AdminController@store');
+        Route::post('update-password', 'AdminController@updatePassword');
     });
 
     // api/v1/admin-rule

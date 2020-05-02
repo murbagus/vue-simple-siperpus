@@ -123,4 +123,54 @@ class AdminController extends Controller
 
         return response()->json($respons_obj, $respons_obj->kode);
     }
+
+    /**
+     * Upadate password current admin
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request)
+    {
+        $respons_obj = new ResponseObject();
+
+        $validator = Validator::make($request->all(), [
+            'old_password' => [
+                'bail', 'required',
+                function ($attribute, $value, $fail) use ($request) {
+                    // Validasi input password lama harus sesuai dengan yang ada di database
+                    if (!Hash::check($request->old_password, auth()->user()->password)) {
+                        $fail('Password lama salah');
+                    }
+                },
+            ],
+            'new_password' => ['bail', 'required', 'min:8'],
+            're_password' => ['bail', 'required', 'same:new_password'],
+        ]);
+
+        if ($validator->fails()) {
+            // Gagal validasi
+            $respons_obj->status = $respons_obj::STATUS_FAIL;
+            $respons_obj->kode = $respons_obj::CODE_BAD_REQUEST;
+            $respons_obj->pesan = [
+                'error' => collect($validator->errors()->messages())->map(function ($item, $key) {
+                    return $item[0];
+                }),
+            ];
+        } else {
+
+            // Perbarui password
+            $user = auth()->user();
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+
+            $respons_obj->status = $respons_obj::STATUS_OK;
+            $respons_obj->kode = $respons_obj::CODE_OK;
+            $respons_obj->hasil = [
+                'next_request_token' => auth()->refresh(),
+            ];
+        }
+
+        return response()->json($respons_obj, $respons_obj->kode);
+    }
 }
