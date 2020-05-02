@@ -51,21 +51,21 @@ class AuthController extends Controller
                 $respons_obj->pesan = [
                     'error' => 'ID atau Password salah',
                 ];
-            }
-
-            // Berhasil autentikasi
-            $respons_obj->status = $respons_obj::STATUS_OK;
-            $respons_obj->kode = $respons_obj::CODE_OK;
-            $respons_obj->hasil = [
-                'data' => [
-                    'akses_token' => $token,
-                    'tipe_token' => 'bearer',
-                    'berlaku_dalam' => [
-                        'waktu' => auth('api_v1_admin')->factory()->getTTL(),
-                        'satuan' => 'menit',
+            } else {
+                // Berhasil autentikasi
+                $respons_obj->status = $respons_obj::STATUS_OK;
+                $respons_obj->kode = $respons_obj::CODE_OK;
+                $respons_obj->hasil = [
+                    'data' => [
+                        'akses_token' => $token,
+                        'tipe_token' => 'bearer',
+                        'berlaku_dalam' => [
+                            'waktu' => auth('api_v1_admin')->factory()->getTTL(),
+                            'satuan' => 'menit',
+                        ]
                     ]
-                ]
-            ];
+                ];
+            }
         }
 
         return response()->json($respons_obj, $respons_obj->kode);
