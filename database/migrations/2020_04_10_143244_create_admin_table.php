@@ -14,7 +14,7 @@ class CreateAdminTable extends Migration
     public function up()
     {
         Schema::create('admin', function (Blueprint $table) {
-            $table->string('id', 20)->primary(); // 1998111320201001 -> tahun-bulan-tanggal-lahir/tahun-masuk/jeniskelamin/indeks(3digit)
+            $table->string('id', 15)->primary(); // 20200510001 -> tahun-bulan-masuk/jeniskelamin/indeks(4digit)
             $table->string('password', 250);
             $table->string('nomor_ktp', 20);
             $table->string('nama', 50);
