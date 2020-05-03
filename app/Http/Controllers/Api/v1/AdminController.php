@@ -33,9 +33,9 @@ class AdminController extends Controller
     private function generateID($tgl_lahir, $jenis_kelamin)
     {
         // Dapatkan format
-        $id_format = str_replace('-', '', $tgl_lahir) . date('Y') . ($jenis_kelamin == 'laki' ? '1' : '0');
+        $id_format = date('Ym') . ($jenis_kelamin == 'laki' ? '1' : '0');
         // Dapatkan indeks id berdasarkan jumlah format id yang sama + 1
-        $indeks_id = sprintf("%'.03d", Admin::where('id', 'REGEXP', '^' . $id_format)->count() + 1);
+        $indeks_id = sprintf("%'.04d", Admin::where('id', 'REGEXP', '^' . $id_format)->count() + 1);
 
         return $id_format . $indeks_id;
     }
