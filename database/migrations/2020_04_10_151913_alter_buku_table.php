@@ -15,7 +15,7 @@ class AlterBukuTable extends Migration
     {
         Schema::table('buku', function (Blueprint $table) {
             // add foreign key
-            $table->foreign('isbn')->references('isbn')->on('info_buku');
+            $table->foreign('isbn')->references('isbn')->on('info_buku')->onUpdate('cascade');
         });
     }
 

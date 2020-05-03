@@ -15,8 +15,8 @@ class AlterTransaksiPengembalianTable extends Migration
     {
         Schema::table('transaksi_pengembalian', function (Blueprint $table) {
             // add foreign key
-            $table->foreign('peminjaman')->references('id')->on('transaksi_peminjaman');
-            $table->foreign('penerima')->references('id')->on('admin');
+            $table->foreign('peminjaman')->references('id')->on('transaksi_peminjaman')->onUpdate('cascade');
+            $table->foreign('penerima')->references('id')->on('admin')->onUpdate('cascade');
         });
     }
 

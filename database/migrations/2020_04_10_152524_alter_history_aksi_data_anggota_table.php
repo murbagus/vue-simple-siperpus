@@ -15,8 +15,8 @@ class AlterHistoryAksiDataAnggotaTable extends Migration
     {
         Schema::table('history_aksi_data_anggota', function (Blueprint $table) {
             // add foreign key
-            $table->foreign('anggota')->references('id')->on('anggota');
-            $table->foreign('pembuat')->references('id')->on('admin');
+            $table->foreign('anggota')->references('id')->on('anggota')->onUpdate('cascade');
+            $table->foreign('pembuat')->references('id')->on('admin')->onUpdate('cascade');
         });
     }
 

@@ -15,8 +15,8 @@ class AlterAdminRuleTable extends Migration
     {
         Schema::table('admin_rule', function (Blueprint $table) {
             // add foreign key
-            $table->foreign('admin')->references('id')->on('admin');
-            $table->foreign('rule')->references('id')->on('rule');
+            $table->foreign('admin')->references('id')->on('admin')->onUpdate('cascade');
+            $table->foreign('rule')->references('id')->on('rule')->onUpdate('cascade');
         });
     }
 

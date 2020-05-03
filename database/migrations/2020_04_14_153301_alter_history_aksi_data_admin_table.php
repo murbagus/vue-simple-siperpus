@@ -15,8 +15,8 @@ class AlterHistoryAksiDataAdminTable extends Migration
     {
         Schema::table('history_aksi_data_admin', function (Blueprint $table) {
             // add foreign key
-            $table->foreign('admin')->references('id')->on('admin');
-            $table->foreign('pembuat')->references('id')->on('admin');
+            $table->foreign('admin')->references('id')->on('admin')->onUpdate('cascade');
+            $table->foreign('pembuat')->references('id')->on('admin')->onUpdate('cascade');
         });
     }
 

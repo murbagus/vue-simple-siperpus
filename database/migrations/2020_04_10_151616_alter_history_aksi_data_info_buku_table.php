@@ -15,8 +15,8 @@ class AlterHistoryAksiDataInfoBukuTable extends Migration
     {
         Schema::table('history_aksi_data_info_buku', function (Blueprint $table) {
             // add foreign key
-            $table->foreign('isbn')->references('isbn')->on('info_buku');
-            $table->foreign('pembuat')->references('id')->on('admin');
+            $table->foreign('isbn')->references('isbn')->on('info_buku')->onUpdate('cascade');
+            $table->foreign('pembuat')->references('id')->on('admin')->onUpdate('cascade');
         });
     }
 
