@@ -24,7 +24,7 @@ class AdminController extends Controller
 
     /**
      * Generate ID untuk admin baru
-     * Berdasarkan format tahun-bulan-tanggal-lahir/tahun-masuk/jeniskelamin/indeks(3digit)
+     * Berdasarkan format tahun-bulan-masuk/jeniskelamin/indeks(4digit)
      *
      * @param string $tgl_lahir
      * @param string $jenis_kelamin
