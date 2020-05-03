@@ -74,7 +74,7 @@ class AdminRuleController extends Controller
                 $respons_obj->hasil = [
                     'data' => [
                         'admin' => $request->admin,
-                        'rule' => Rule::all()->only($request->rule)->map(function ($item, $key) {
+                        'rule' => Rule::find($request->rule)->map(function ($item, $key) {
                             return $item->nama;
                         }),
                     ],
