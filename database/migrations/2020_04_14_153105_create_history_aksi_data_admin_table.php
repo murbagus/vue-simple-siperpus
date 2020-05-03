@@ -16,7 +16,7 @@ class CreateHistoryAksiDataAdminTable extends Migration
         Schema::create('history_aksi_data_admin', function (Blueprint $table) {
             $table->id();
             $table->string('admin', 20);
-            $table->string('pembuat', 20);
+            $table->string('pembuat', 15);
             $table->text('catatan_aksi');
             $table->dateTime('waktu_terjadi');
         });

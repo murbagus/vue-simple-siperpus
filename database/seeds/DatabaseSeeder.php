@@ -49,11 +49,11 @@ class DatabaseSeeder extends Seeder
 
         // Menambah data rule admin untuk master
         DB::table('admin_rule')->insert([
-            ['admin' => '1234567890123456', 'rule' => 1],
-            ['admin' => '1234567890123456', 'rule' => 2],
-            ['admin' => '1234567890123456', 'rule' => 3],
-            ['admin' => '1234567890123456', 'rule' => 4],
-            ['admin' => '1234567890123456', 'rule' => 5],
+            ['admin' => '123456789012345', 'rule' => 1],
+            ['admin' => '123456789012345', 'rule' => 2],
+            ['admin' => '123456789012345', 'rule' => 3],
+            ['admin' => '123456789012345', 'rule' => 4],
+            ['admin' => '123456789012345', 'rule' => 5],
         ]);
     }
 }

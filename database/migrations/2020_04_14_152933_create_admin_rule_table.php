@@ -15,7 +15,7 @@ class CreateAdminRuleTable extends Migration
     {
         Schema::create('admin_rule', function (Blueprint $table) {
             $table->id();
-            $table->string('admin', 20);
+            $table->string('admin', 15);
             $table->unsignedBigInteger('rule');
         });
     }

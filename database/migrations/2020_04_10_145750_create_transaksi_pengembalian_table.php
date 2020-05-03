@@ -17,7 +17,7 @@ class CreateTransaksiPengembalianTable extends Migration
             $table->id();
             $table->dateTime('tanggal_kembali');
             $table->unsignedBigInteger('peminjaman');
-            $table->string('penerima', 20);
+            $table->string('penerima', 15);
         });
     }
 

@@ -18,7 +18,7 @@ class CreateTransaksiPeminjamanTable extends Migration
             $table->dateTime('tanggal_pinjam');
             $table->string('peminjam', 30);
             $table->string('buku', 50);
-            $table->string('pemberi_pinjaman', 20);
+            $table->string('pemberi_pinjaman', 15);
         });
     }
 

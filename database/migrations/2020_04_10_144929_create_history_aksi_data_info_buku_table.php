@@ -16,7 +16,7 @@ class CreateHistoryAksiDataInfoBukuTable extends Migration
         Schema::create('history_aksi_data_info_buku', function (Blueprint $table) {
             $table->id();
             $table->string('isbn', 25);
-            $table->string('pembuat', 20);
+            $table->string('pembuat', 15);
             $table->text('catatan_aksi');
             $table->dateTime('waktu_terjadi');
         });
