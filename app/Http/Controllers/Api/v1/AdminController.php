@@ -26,18 +26,28 @@ class AdminController extends Controller
      * Generate ID untuk admin baru
      * Berdasarkan format tahun-bulan-masuk/jeniskelamin/indeks(4digit)
      *
-     * @param string $tgl_lahir
      * @param string $jenis_kelamin
      * @return string
      */
-    private function generateID($tgl_lahir, $jenis_kelamin)
+    private function generateID($jenis_kelamin)
     {
+        // Menentukan jumlah digit indeks (contoh: 0001 -> memiliki jumlah digit 4)
+        $digit_indeks = 4;
+
         // Dapatkan format
         $id_format = date('Ym') . ($jenis_kelamin == 'laki' ? '1' : '0');
-        // Dapatkan indeks id berdasarkan jumlah format id yang sama + 1
-        $indeks_id = sprintf("%'.04d", Admin::where('id', 'REGEXP', '^' . $id_format)->count() + 1);
+        // Dapatkan indeks tebaru
+        $admin_terbaru = Admin::where('id', 'REGEXP', '^' . $id_format)->orderBy('id', 'desc')->first();
+        // Jika ada admin yang memiliki id format serupa
+        if ($admin_terbaru) {
+            // Dapatkan indeks selanjutnya dengan mengambil potongan string id_terbaru untuk mengambil indeks dari id tersebut
+            $indeks_selanjutnya = sprintf("%'.0" . $digit_indeks . "d", intval(substr($admin_terbaru->id, 7), 10) + 1);
+        } else {
+            // Belum ada admin dengan id format serupa
+            $indeks_selanjutnya = sprintf("%'.0" . $digit_indeks . "d", 1);
+        }
 
-        return $id_format . $indeks_id;
+        return $id_format . $indeks_selanjutnya;
     }
 
     /**
@@ -78,11 +88,6 @@ class AdminController extends Controller
             ];
         } else {
             // Validasi berhasil
-            // Tambahkan id pada request
-            $request->request->add(['id' => $this->generateID($request->tanggal_lahir, $request->jenis_kelamin)]);
-            // Hashing password
-            $request->request->set('password', Hash::make($request->password));
-
             // Cek file_foto
             // Jika ada file_foto yang diberikan maka gunakan fot tersebut
             if ($request->hasFile('file_foto')) {
@@ -94,6 +99,15 @@ class AdminController extends Controller
             }
 
             DB::transaction(function () use ($request) {
+                // Kunci table admin agar tidak dapat di akses oleh session lain saat transaksi ini berlangsung
+                // Hal ini berguna agar pengambilan indeks id menjadi sesuai
+                DB::table('admin')->lockForUpdate()->get();
+
+                // Tambahkan id pada request
+                $request->request->add(['id' => $this->generateID($request->jenis_kelamin)]);
+                // Hashing password
+                $request->request->set('password', Hash::make($request->password));
+
                 // Insert data admin baru
                 $admin = Admin::create($request->only(['id', 'password', 'nomor_ktp', 'nama', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'nomor_telpon', 'email', 'foto']));
 
