@@ -106,7 +106,7 @@ class AdminController extends Controller
                     $nama_foto = config('fileupload.img.admin_profile.prefix') . $request->id . '-' . time() . '.' . $request->file_foto->getClientOriginalExtension();
                     $request->request->add(['foto' => $nama_foto]);
                 } else {
-                    $request->request->add(['foto' => 'profiledefault.png']);
+                    $request->request->add(['foto' => config('fileupload.img.admin_profile.default_name')]);
                 }
 
                 // Insert data admin baru
@@ -175,7 +175,7 @@ class AdminController extends Controller
                 // Hapus file foto lama
                 $nama_foto_lama = $admin->foto;
                 // Jika foto bukan foto default maka hapus file foto tersebut
-                if ($nama_foto_lama != 'profiledefault.png') {
+                if ($nama_foto_lama != config('fileupload.img.admin_profile.default_name')) {
                     Storage::delete(config('fileupload.img.admin_profile.path') . '/' . $nama_foto_lama);
                 }
 
