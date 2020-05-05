@@ -89,16 +89,6 @@ class AdminController extends Controller
             ];
         } else {
             // Validasi berhasil
-            // Cek file_foto
-            // Jika ada file_foto yang diberikan maka gunakan fot tersebut
-            if ($request->hasFile('file_foto')) {
-                // Tambahkan foto pada request yang berisi nama file_foto
-                $nama_foto = config('fileupload.img.admin_profile.prefix') . $request->id . '-' . time() . '.' . $request->file_foto->getClientOriginalExtension();
-                $request->request->add(['foto' => $nama_foto]);
-            } else {
-                $request->request->add(['foto' => 'profiledefault.png']);
-            }
-
             DB::transaction(function () use ($request) {
                 // Kunci table admin agar tidak dapat di akses oleh session lain saat transaksi ini berlangsung
                 // Hal ini berguna agar pengambilan indeks id menjadi sesuai
@@ -108,6 +98,16 @@ class AdminController extends Controller
                 $request->request->add(['id' => $this->generateID($request->jenis_kelamin)]);
                 // Hashing password
                 $request->request->set('password', Hash::make($request->password));
+
+                // Cek file_foto
+                // Jika ada file_foto yang diberikan maka gunakan fot tersebut
+                if ($request->hasFile('file_foto')) {
+                    // Tambahkan foto pada request yang berisi nama file_foto
+                    $nama_foto = config('fileupload.img.admin_profile.prefix') . $request->id . '-' . time() . '.' . $request->file_foto->getClientOriginalExtension();
+                    $request->request->add(['foto' => $nama_foto]);
+                } else {
+                    $request->request->add(['foto' => 'profiledefault.png']);
+                }
 
                 // Insert data admin baru
                 $admin = Admin::create($request->only(['id', 'password', 'nomor_ktp', 'nama', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat', 'nomor_telpon', 'email', 'foto']));
@@ -181,7 +181,7 @@ class AdminController extends Controller
 
                 // Tambahkan foto baru pada request yang berisi nama file_foto
                 // Nama foto disini merupakan nama foto yang baru di upload
-                $nama_foto = config('fileupload.img.admin_profile.prefix') . $request->id . '-' . time() . '.' . $request->file_foto->getClientOriginalExtension();
+                $nama_foto = config('fileupload.img.admin_profile.prefix') . $admin->id . '-' . time() . '.' . $request->file_foto->getClientOriginalExtension();
                 $request->request->add(['foto' => $nama_foto]);
             }
 
