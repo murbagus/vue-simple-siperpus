@@ -54,7 +54,9 @@ class AdminPolicy
      */
     public function update(Admin $user, Admin $admin)
     {
-        //
+        return $user->f_memilikiRule->contains(function ($item, $key) {
+            return $item->rule == 1;
+        });
     }
 
     /**
