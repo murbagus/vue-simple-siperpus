@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInfoBukuTable extends Migration
+class CreateTableHistoryAksiDataPenerbitBuku extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateInfoBukuTable extends Migration
      */
     public function up()
     {
-        Schema::create('info_buku', function (Blueprint $table) {
-            $table->string('isbn', 25)->primary();
-            $table->string('judul', 150);
-            $table->string('pengarang', 100);
+        Schema::create('history_aksi_data_penerbit_buku', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('penerbit');
-            $table->string('kalsifikasi', 25);
-            $table->unsignedInteger('tahun_terbit');
+            $table->string('pembuat', 15);
+            $table->text('catatan_aksi');
+            $table->dateTime('waktu_terjadi');
         });
     }
 
@@ -30,6 +29,6 @@ class CreateInfoBukuTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('info_buku');
+        Schema::dropIfExists('history_aksi_data_penerbit_buku');
     }
 }
