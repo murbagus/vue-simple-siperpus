@@ -37,4 +37,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
     Route::prefix('admin-rule')->group(function () {
         Route::post('set', 'AdminRuleController@set');
     });
+
+    // api/v1/info-buku
+    Route::prefix('info-buku')->group(function () {
+        Route::post('store', 'InfoBukuController@store');
+    });
 });
