@@ -12,7 +12,7 @@ class InfoBuku extends Model
     public $incrementing = false;
     public $timestamps = false;
 
-    protected $fillable = ['isbn', 'judul', 'pengarang', 'penerbit', 'tahun_terbit'];
+    protected $fillable = ['isbn', 'judul', 'pengarang', 'penerbit', 'klasifikasi', 'tahun_terbit'];
 
     public function f_dataBerubah()
     {

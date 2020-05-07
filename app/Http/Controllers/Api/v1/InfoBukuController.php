@@ -47,7 +47,8 @@ class InfoBukuController extends Controller
             'isbn' => ['bail', 'required', 'unique:info_buku,isbn'],
             'judul' => ['bail', 'required', 'max:150'],
             'pengarang' => ['bail', 'required', 'max:100'],
-            'penerbit' => ['bail', 'required', 'max:50'],
+            'penerbit' => ['bail', 'required', 'exists:penerbit_buku,id'],
+            'klasifikasi' => ['bail', 'required', 'max:25'],
             'tahun_terbit' => ['bail', 'required', 'date_format:Y'],
             'jumlah_buku' => ['bail', 'required', 'integer', 'min:1', 'max:999']
         ]);
@@ -71,7 +72,7 @@ class InfoBukuController extends Controller
                 DB::table('buku')->lockForUpdate()->get();
 
                 // Simpan data info buku ke database
-                $info_buku = InfoBuku::create($request->only(['isbn', 'judul', 'pengarang', 'penerbit', 'tahun_terbit']));
+                $info_buku = InfoBuku::create($request->only(['isbn', 'judul', 'pengarang', 'penerbit', 'klasifikasi', 'tahun_terbit']));
 
                 // Simpan data setiap kode fisik buku ke database
                 // Membuat kode unik setiap fisik buku fotmat (timestapm-3digitangka)
