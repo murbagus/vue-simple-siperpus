@@ -28,19 +28,19 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
 
     // api/v1/admin
     Route::prefix('admin')->group(function () {
-        Route::post('store', 'AdminController@store');
+        Route::post('/', 'AdminController@store');
         Route::post('update/{admin}', 'AdminController@update');
         Route::post('update-password', 'AdminController@updatePassword');
     });
 
     // api/v1/admin-rule
     Route::prefix('admin-rule')->group(function () {
-        Route::post('set', 'AdminRuleController@set');
+        Route::post('/', 'AdminRuleController@set');
     });
 
     // api/v1/info-buku
     Route::prefix('info-buku')->group(function () {
-        Route::post('store', 'InfoBukuController@store');
+        Route::post('/', 'InfoBukuController@store');
     });
 
     // api/v1/penerbit-buku
