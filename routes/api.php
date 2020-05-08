@@ -40,6 +40,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
 
     // api/v1/info-buku
     Route::prefix('info-buku')->group(function () {
+        Route::get('/', 'InfoBukuController@index');
         Route::post('/', 'InfoBukuController@store');
     });
 

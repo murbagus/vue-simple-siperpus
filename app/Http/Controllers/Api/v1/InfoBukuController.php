@@ -28,7 +28,21 @@ class InfoBukuController extends Controller
      */
     public function index()
     {
-        //
+        $respons_obj = new ResponseObject();
+
+        $info_buku = InfoBuku::all();
+
+        // Objek respon
+        $respons_obj->status = $respons_obj::STATUS_OK;
+        $respons_obj->kode = $respons_obj::CODE_OK;
+        $respons_obj->hasil = [
+            'data' => [
+                'info_buku' => $info_buku,
+            ],
+            'next_request_token' => auth()->refresh(),
+        ];
+
+        return response()->json($respons_obj, $respons_obj->kode);
     }
 
     /**
