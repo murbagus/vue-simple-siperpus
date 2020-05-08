@@ -18,7 +18,7 @@ class CreateInfoBukuTable extends Migration
             $table->string('judul', 150);
             $table->string('pengarang', 100);
             $table->unsignedBigInteger('penerbit');
-            $table->string('kalsifikasi', 25);
+            $table->string('klasifikasi', 25);
             $table->unsignedInteger('tahun_terbit');
         });
     }

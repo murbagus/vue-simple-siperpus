@@ -18,7 +18,6 @@ class CreateTablePenerbit extends Migration
             $table->string('nama', 50);
             $table->string('nomor_telpon', 15);
             $table->text('alamat');
-            $table->timestamps();
         });
     }
 
