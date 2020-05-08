@@ -42,4 +42,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
     Route::prefix('info-buku')->group(function () {
         Route::post('store', 'InfoBukuController@store');
     });
+
+    // api/v1/penerbit-buku
+    Route::prefix('penerbit-buku')->group(function () {
+        Route::get('/', 'PenerbitBukuController@index');
+    });
 });

@@ -33,12 +33,18 @@ class DatabaseSeeder extends Seeder
         ]);
         DB::table('rule')->insert([
             'id' => 4,
-            'nama' => 'transaksi peminjaman',
+            'nama' => 'manipulasi data penerbit buku',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
         DB::table('rule')->insert([
             'id' => 5,
+            'nama' => 'transaksi peminjaman',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+        DB::table('rule')->insert([
+            'id' => 6,
             'nama' => 'transaksi pengembalian',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
@@ -54,6 +60,7 @@ class DatabaseSeeder extends Seeder
             ['admin' => '123456789012345', 'rule' => 3],
             ['admin' => '123456789012345', 'rule' => 4],
             ['admin' => '123456789012345', 'rule' => 5],
+            ['admin' => '123456789012345', 'rule' => 6],
         ]);
     }
 }
