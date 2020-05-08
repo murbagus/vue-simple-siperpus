@@ -33,7 +33,7 @@ class ApiAuth
                 'error' => 'Token sudah tidak berlaku',
             ];
 
-            return response()->json($response_obj);
+            return response()->json($response_obj, $response_obj->kode);
         } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
             // Token invalid
             $response_obj->status = $response_obj::STATUS_FAIL;
@@ -42,7 +42,7 @@ class ApiAuth
                 'error' => 'Token tidak valid',
             ];
 
-            return response()->json($response_obj);
+            return response()->json($response_obj, $response_obj->kode);
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
             // Terjadi kesalahan saat parsing token
             $response_obj->status = $response_obj::STATUS_FAIL;
@@ -51,7 +51,7 @@ class ApiAuth
                 'error' => 'Request membutuhkan token untuk autentikasi',
             ];
 
-            return response()->json($response_obj);
+            return response()->json($response_obj, $response_obj->kode);
         }
 
         return $next($request);
