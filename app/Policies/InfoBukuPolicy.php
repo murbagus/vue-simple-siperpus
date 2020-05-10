@@ -55,7 +55,9 @@ class InfoBukuPolicy
      */
     public function update(Admin $user, InfoBuku $infoBuku)
     {
-        //
+        return $user->f_memilikiRule->contains(function ($item, $key) {
+            return $item->rule == 3;
+        });
     }
 
     /**

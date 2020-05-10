@@ -8,6 +8,7 @@ use App\InfoBuku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class InfoBukuController extends Controller
 {
@@ -147,7 +148,58 @@ class InfoBukuController extends Controller
      */
     public function update(Request $request, InfoBuku $info_buku)
     {
-        //
+        $this->authorize('update', $info_buku);
+
+        $respons_obj = new ResponseObject();
+
+        $validator = Validator::make($request->all(), [
+            'isbn' => [
+                'bail', 'required',
+                Rule::unique('info_buku')->ignore($info_buku->isbn, 'isbn'),
+            ],
+            'judul' => ['bail', 'required', 'max:150'],
+            'pengarang' => ['bail', 'required', 'max:100'],
+            'penerbit' => ['bail', 'required', 'exists:penerbit_buku,id'],
+            'klasifikasi' => ['bail', 'required', 'max:25'],
+            'tahun_terbit' => ['bail', 'required', 'date_format:Y']
+        ]);
+
+        if ($validator->fails()) {
+            // Validasi gagal
+            $respons_obj->status = $respons_obj::STATUS_FAIL;
+            $respons_obj->kode = $respons_obj::CODE_BAD_REQUEST;
+            $respons_obj->pesan = [
+                'error' => collect($validator->errors()->messages())->map(function ($item, $key) {
+                    return $item[0];
+                }),
+            ];
+        } else {
+            // Validasi berhasil
+            DB::transaction(function () use ($request, $info_buku) {
+                // Simpan data info buku ke database
+                $info_buku->fill($request->only(['isbn', 'judul', 'pengarang', 'penerbit', 'klasifikasi', 'tahun_terbit']));
+                $info_buku->save();
+
+                // Logging aksi perubahan data
+                HistoryAksiDataInfoBuku::create([
+                    'isbn' => $info_buku->isbn,
+                    'pembuat' => auth()->id(),
+                    'catatan_aksi' => 'Merubah data buku',
+                ]);
+            });
+
+            // Objek respon
+            $respons_obj->status = $respons_obj::STATUS_OK;
+            $respons_obj->kode = $respons_obj::CODE_OK;
+            $respons_obj->hasil = [
+                'data' => [
+                    'info_buku' => $request->only(['isbn', 'judul', 'pengarang', 'penerbit', 'tahun_terbit'])
+                ],
+                'next_request_token' => auth()->refresh(),
+            ];
+        }
+
+        return response()->json($respons_obj, $respons_obj->kode);
     }
 
     /**
